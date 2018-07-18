@@ -1,0 +1,9 @@
+Package: Quantfunctions
+Title: Contains a diverse set of functions and indicators to add functionality to Quantmod, TTR and Quantstrat
+Version: 0.0.0.9000
+Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
+Description: Contains several functions to enhance Quanmod and Quantstrat. 
+Depends: R (>= 3.5.0)
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
