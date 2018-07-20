@@ -23,8 +23,8 @@
 #' addTA(stochRSI(Cl(ADM)))
 #' }
 stochRSI <- function(price, n = 14L){
-  rsi <- RSI(price, n)
-  rsi_out <- (rsi - runMin(rsi, n)) / (runMax(rsi, n) - runMin(rsi, n))
+  rsi <- TTR::RSI(price, n)
+  rsi_out <- (rsi - TTR::runMin(rsi, n)) / (TTR::runMax(rsi, n) - TTR::runMin(rsi, n))
   return(rsi_out)
 }
 

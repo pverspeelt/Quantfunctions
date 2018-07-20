@@ -30,9 +30,9 @@ chandelier <- function(HLC, n = 22, coef = 3, trend = "up"){
   if(!trend %in% c("up", "down")) stop("trend should be up or down", call. = FALSE)
   
   if(trend == "down"){  
-    chandelier <- runMin(Lo(HLC), n) + coef * ATR(HLC(HLC), n)[,"atr"]  
+    chandelier <- TTR::runMin(quantmod::Lo(HLC), n) + coef * TTR::ATR(quantmod::HLC(HLC), n)[,"atr"]  
   } else {
-    chandelier <- runMax(Hi(HLC), n) - coef * ATR(HLC(HLC), n)[,"atr"]
+    chandelier <- TTR::runMax(quantmod::Hi(HLC), n) - coef * TTR::ATR(quantmod::HLC(HLC), n)[,"atr"]
   }
   return(chandelier)
 }
