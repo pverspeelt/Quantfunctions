@@ -12,7 +12,8 @@
 #' @param HLC Object that is coercible to xts or matrix and contains High-Low-Close prices.
 #' @param n Number of periods for chandelier period. Default is 22.
 #' @param coef ATR coefficient. Default is 3
-#' @param trend Indicates if chandelier should be calculated for the up-trend or down-trend. Default is up.
+#' @param trend Indicates if chandelier should be calculated for the up-trend or down-trend. 
+#' Default is up. Possible values are "up" or "down".
 #'
 #' @return Returns the chandelier exit points which can be used as stop loss in a trend following strategy.
 #' @export
@@ -34,7 +35,7 @@ chandelier <- function(HLC, n = 22, coef = 3, trend = "up"){
   } else {
     chandelier <- TTR::runMax(quantmod::Hi(HLC), n) - coef * TTR::ATR(quantmod::HLC(HLC), n)[,"atr"]
   }
-  return(chandelier)
+  return(setNames(chandelier, "chandelier_stop"))
 }
 
 
@@ -94,6 +95,6 @@ safezone <- function(HL, n = 10, coef = 2, prevent = 5, trend = "up"){
     protection <- TTR::runMax(short_stop, n = prevent)
   }
   
-  return(setNames(protection, "stop"))
+  return(setNames(protection, "safezone_stop"))
 }
 

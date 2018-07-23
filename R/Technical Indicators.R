@@ -25,7 +25,7 @@
 stochRSI <- function(price, n = 14L){
   rsi <- TTR::RSI(price, n)
   rsi_out <- (rsi - TTR::runMin(rsi, n)) / (TTR::runMax(rsi, n) - TTR::runMin(rsi, n))
-  return(rsi_out)
+  return(setNames(rsi_out, "stochRSI"))
 }
 
 

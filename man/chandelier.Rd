@@ -13,7 +13,8 @@ chandelier(HLC, n = 22, coef = 3, trend = "up")
 
 \item{coef}{ATR coefficient. Default is 3}
 
-\item{trend}{Indicates if chandelier should be calculated for the up-trend or down-trend. Default is up.}
+\item{trend}{Indicates if chandelier should be calculated for the up-trend or down-trend. 
+Default is up. Possible values are "up" or "down".}
 }
 \value{
 Returns the chandelier exit points which can be used as stop loss in a trend following strategy.
