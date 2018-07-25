@@ -29,3 +29,36 @@ stochRSI <- function(price, n = 14L){
 }
 
 
+
+#' Moving Average Envelope
+#' 
+#' This function creates a moving average envelope. 
+#'
+#' @param data an xts object that contains OHLC data
+#' @param maType moving average type. Default is "EMA". But any 
+#' @param n Number of periods. Default is 22.
+#' @param p percentage of moving the upper and lower bounderies away from the 
+#' midpoint of the moving average. Default is 2.5. Needs to be between 0 and 100.
+#' @param ... any other passthrough parameters
+#'
+#' @return Returns a timeseries with the lower and upper bound and the midpoint of the chosen moving average.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' getSymbols("ADM", from = "2018-01-01", to = "2018-07-01")
+#' chartSeries(ADM)
+#' addTA(envelope(ADM), on = 1)
+#' }
+#' @references
+#' \url{https://www.investopedia.com/terms/e/envelope.asp}
+#' 
+envelope <- function(data, maType = "EMA", n = 22, p = 2.5, ...){
+  movavg <- do.call(maType, list(Cl(data), n = n, ...))
+  envelope <- cbind(movavg * (1 - p/100), movavg, movavg * (1 + p/100))
+  
+  return(setNames(envelope, c("lower_bound", "midpoint", "upper_bound")))
+}
+
+
+
