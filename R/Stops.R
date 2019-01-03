@@ -98,3 +98,55 @@ safezone <- function(HL, n = 10, coef = 2, prevent = 5, trend = "up"){
   return(setNames(protection, "safezone_stop"))
 }
 
+
+
+#' Average True Range Trailing Stop
+#' 
+#' This average true range trailing stop was developed by Sylvain Vervoort. 
+#' 
+#' Based on \href{https://stackoverflow.com/questions/5554220/r-statistics-average-true-range-trailing-stop-indicator}{this question} 
+#' on stackoverflow and \href{http://marintrading.com/106VERV.PDF}{this article} by Sylvain Vervoort.
+#'
+#' @param x an xts object that contains OHLC data
+#' @param n Number of lookback periods for the ATR Stop. Default is 5
+#' @param coef ATR coefficient. Default is 3.5
+#'
+#' @return Returns an average true range trailing stop which can be used as a stop loss in a trend following system.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # show ATR stop on chart
+#' getSymbols("ADM", from = "2018-01-01", to = "2018-07-01")
+#' chartSeries(ADM)
+#' addTA(ATR_stop(ADM), on = 1)
+#' }
+ATR_stop <- function(x, n = 5, coef = 3.5){
+  
+  if(!quantmod::is.OHLC(x)) stop("x must contain OHLC columns")
+  
+  x$ATR_stop <- coef * TTR::ATR(quantmod::HLC(x), n)[, "atr"]
+  x$ATR_trail_stop <- 0
+  x$lag_cl <- stats::lag(quantmod::Cl(x))
+  
+  for(i in seq.int(n + 1L, nrow(x))){
+    trail1 <- zoo::coredata(x$ATR_trail_stop[i-1])
+    if(quantmod::Cl(x)[i] > trail1 && x$lag_cl[i] > trail1) {
+      x$ATR_trail_stop[i] <- max(trail1, zoo::coredata(Cl(x)[i] - x$ATR_stop[i]))
+    } else
+      if(quantmod::Cl(x)[i] < trail1 && x$lag_cl[i] < trail1) {
+        x$ATR_trail_stop[i] <- min(trail1, zoo::coredata(Cl(x)[i] + x$ATR_stop[i]))
+      } else
+        if(quantmod::Cl(x)[i] > trail1) {
+          x$ATR_trail_stop[i] <- zoo::coredata(Cl(x)[i] - x$ATR_stop[i])
+        } else {
+          x$ATR_trail_stop[i] <- zoo::coredata(Cl(x)[i] + x$ATR_stop[i])
+        }
+  }
+  
+  # clean up:
+  x$ATR_trail_stop[1:n] <- NA
+  
+  return(x$ATR_trail_stop)
+}  
+
