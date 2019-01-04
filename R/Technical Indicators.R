@@ -10,7 +10,7 @@
 #' The Stochastic RSI is an oscillator that calculates a value between 0 and 1 which can be plotted as a line. 
 #' This indicator is primarily used for identifying overbought and oversold conditions.
 #' 
-#' @param price Price series that is coercible to xts or matrix
+#' @param x Price series that is coercible to xts or matrix
 #' @param n Number of periods. Default is 14.
 #'
 #' @return The stochRSI function will return a timeseries with values ranging between 0 and 1
@@ -22,8 +22,8 @@
 #' chartSeries(ADM, TA = NULL) # without volume
 #' addTA(stochRSI(Cl(ADM)))
 #' }
-stochRSI <- function(price, n = 14L){
-  rsi <- TTR::RSI(price, n)
+stochRSI <- function(x, n = 14L){
+  rsi <- TTR::RSI(x, n)
   rsi_out <- (rsi - TTR::runMin(rsi, n)) / (TTR::runMax(rsi, n) - TTR::runMin(rsi, n))
   return(setNames(rsi_out, "stochRSI"))
 }
@@ -34,7 +34,7 @@ stochRSI <- function(price, n = 14L){
 #' 
 #' This function creates a moving average envelope. 
 #'
-#' @param data an xts object that contains OHLC data
+#' @param x an xts object that contains OHLC data
 #' @param maType moving average type. Default is "EMA". But any 
 #' @param n Number of periods. Default is 22.
 #' @param p percentage of moving the upper and lower bounderies away from the 
@@ -53,8 +53,8 @@ stochRSI <- function(price, n = 14L){
 #' @references
 #' \url{https://www.investopedia.com/terms/e/envelope.asp}
 #' 
-envelope <- function(data, maType = "EMA", n = 22, p = 2.5, ...){
-  movavg <- do.call(maType, list(Cl(data), n = n, ...))
+envelope <- function(x, maType = "EMA", n = 22, p = 2.5, ...){
+  movavg <- do.call(maType, list(Cl(x), n = n, ...))
   envelope <- cbind(movavg * (1 - p/100), movavg, movavg * (1 + p/100))
   
   return(setNames(envelope, c("lower_bound", "midpoint", "upper_bound")))

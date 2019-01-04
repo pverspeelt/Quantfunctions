@@ -4,10 +4,10 @@
 \alias{stochRSI}
 \title{Stochastic RSI}
 \usage{
-stochRSI(price, n = 14L)
+stochRSI(x, n = 14L)
 }
 \arguments{
-\item{price}{Price series that is coercible to xts or matrix}
+\item{x}{Price series that is coercible to xts or matrix}
 
 \item{n}{Number of periods. Default is 14.}
 }

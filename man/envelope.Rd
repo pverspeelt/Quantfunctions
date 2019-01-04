@@ -4,10 +4,10 @@
 \alias{envelope}
 \title{Moving Average Envelope}
 \usage{
-envelope(data, maType = "EMA", n = 22, p = 2.5, ...)
+envelope(x, maType = "EMA", n = 22, p = 2.5, ...)
 }
 \arguments{
-\item{data}{an xts object that contains OHLC data}
+\item{x}{an xts object that contains OHLC data}
 
 \item{maType}{moving average type. Default is "EMA". But any}
 

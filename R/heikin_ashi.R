@@ -18,7 +18,7 @@
 #'  
 #'  More information can be found at \href{https://www.investopedia.com/trading/heikin-ashi-better-candlestick/}{Investopedia}
 #'
-#' @param data an xts object that contains OHLC data 
+#' @param x an xts object that contains OHLC data 
 #'
 #' @return The heikin_ashi function will return a OHLC dataset with the calculated 
 #' heikin ashi values needed for plotting in a candlestick chart.
@@ -36,20 +36,20 @@
 #' chartSeries(ha_ADM)
 #' }
 #'  
-heikin_ashi <- function(data) {
+heikin_ashi <- function(x) {
   
-  if(!quantmod::is.OHLC(data)) stop("data must contain OHLC columns")
+  if(!quantmod::is.OHLC(x)) stop("x must contain OHLC columns")
   
-  heikin_close <- xts::xts(Matrix::rowMeans(quantmod::OHLC(data)), order.by = index(data))
-  heikin_open  <- quantmod::Op(data)
+  heikin_close <- xts::xts(Matrix::rowMeans(quantmod::OHLC(x)), order.by = index(x))
+  heikin_open  <- quantmod::Op(x)
   
   # need a loop: heiki ashi open is dependent on the previous value
-  for(i in 2:nrow(data)) {
+  for(i in 2:nrow(x)) {
     heikin_open[i] <- (heikin_open[i-1] + heikin_close[i-1]) / 2
   }
   
-  heikin_high <- xts::xts(apply(cbind(quantmod::Hi(data), heikin_open, heikin_close), 1, max), order.by = index(data))
-  heikin_low <- xts::xts(apply(cbind(quantmod::Lo(data), heikin_open, heikin_close), 1, min), order.by = index(data))
+  heikin_high <- xts::xts(apply(cbind(quantmod::Hi(x), heikin_open, heikin_close), 1, max), order.by = index(x))
+  heikin_low <- xts::xts(apply(cbind(quantmod::Lo(x), heikin_open, heikin_close), 1, min), order.by = index(x))
   
   out <- merge(heikin_open, heikin_high, heikin_low, heikin_close)
   out <- setNames(out, c("Open", "High", "Low", "Close"))

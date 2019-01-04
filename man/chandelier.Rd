@@ -4,10 +4,10 @@
 \alias{chandelier}
 \title{Chandelier Exit}
 \usage{
-chandelier(HLC, n = 22, coef = 3, trend = "up")
+chandelier(x, n = 22, coef = 3, trend = "up")
 }
 \arguments{
-\item{HLC}{Object that is coercible to xts or matrix and contains High-Low-Close prices.}
+\item{x}{Object that is coercible to xts or matrix and contains High-Low-Close prices.}
 
 \item{n}{Number of periods for chandelier period. Default is 22.}
 

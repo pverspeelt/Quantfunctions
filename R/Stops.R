@@ -9,7 +9,7 @@
 #' In a down-trend the formula is reversed:
 #' Lowest Low in last 22 days + 3 * ATR for 22 days
 #'
-#' @param HLC Object that is coercible to xts or matrix and contains High-Low-Close prices.
+#' @param x Object that is coercible to xts or matrix and contains High-Low-Close prices.
 #' @param n Number of periods for chandelier period. Default is 22.
 #' @param coef ATR coefficient. Default is 3
 #' @param trend Indicates if chandelier should be calculated for the up-trend or down-trend. 
@@ -26,14 +26,14 @@
 #' }
 #' 
 #' 
-chandelier <- function(HLC, n = 22, coef = 3, trend = "up"){
-  HLC <- try.xts(HLC, error = as.matrix)
+chandelier <- function(x, n = 22, coef = 3, trend = "up"){
+  HLC <- try.xts(x, error = as.matrix)
   if(!trend %in% c("up", "down")) stop("trend should be up or down", call. = FALSE)
   
   if(trend == "down"){  
-    chandelier <- TTR::runMin(quantmod::Lo(HLC), n) + coef * TTR::ATR(quantmod::HLC(HLC), n)[,"atr"]  
+    chandelier <- TTR::runMin(quantmod::Lo(x), n) + coef * TTR::ATR(quantmod::HLC(x), n)[,"atr"]  
   } else {
-    chandelier <- TTR::runMax(quantmod::Hi(HLC), n) - coef * TTR::ATR(quantmod::HLC(HLC), n)[,"atr"]
+    chandelier <- TTR::runMax(quantmod::Hi(x), n) - coef * TTR::ATR(quantmod::HLC(x), n)[,"atr"]
   }
   return(setNames(chandelier, "chandelier_stop"))
 }
@@ -56,7 +56,7 @@ chandelier <- function(HLC, n = 22, coef = 3, trend = "up"){
 #' stop for the specified lookback. The rules are reversed for down trend calculations.
 #'  
 #'
-#' @param HL An object that is coercible to xts or matrix and contains High-Low prices.
+#' @param x An object that is coercible to xts or matrix and contains High-Low prices.
 #' @param n Number of lookback periods for the safezone period. Default is 10.
 #' @param coef Coefficient for multiplying the average downside (or upside) penetration. Default is 2.
 #' @param prevent Prevents the stop from lowering for x days. Default is 5.
@@ -73,12 +73,12 @@ chandelier <- function(HLC, n = 22, coef = 3, trend = "up"){
 #' chartSeries(ADM)
 #' addTA(safezone(ADM), on = 1)
 #' }
-safezone <- function(HL, n = 10, coef = 2, prevent = 5, trend = "up"){
+safezone <- function(x, n = 10, coef = 2, prevent = 5, trend = "up"){
   
   if(!trend %in% c("up", "down")) stop("trend should be up or down", call. = FALSE)
   
   if(trend == "down"){
-    high <- Hi(HL)
+    high <- quantmod::Hi(x)
     up_pen <- ifelse(high > quantmod::Lag(high), high - quantmod::Lag(high), 0)
     up_sum <- TTR::runSum(up_pen, n = n)
     up_sumYN <- TTR::runSum(up_pen > 0)
@@ -86,7 +86,7 @@ safezone <- function(HL, n = 10, coef = 2, prevent = 5, trend = "up"){
     up_stop <- quantmod::Lag(high) + coef * quantmod::Lag(up_avg)
     protection <- TTR::runMin(up_stop, n = prevent)
   } else {
-    low <- Lo(HL)
+    low <- quantmod::Lo(x)
     down_pen <- ifelse(quantmod::Lag(low) > low, quantmod::Lag(low) - low, 0)
     down_sum <- TTR::runSum(down_pen, n = n)
     down_sumYN <- TTR::runSum(down_pen > 0)

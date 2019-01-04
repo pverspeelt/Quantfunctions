@@ -4,10 +4,10 @@
 \alias{safezone}
 \title{Safezone Stop}
 \usage{
-safezone(HL, n = 10, coef = 2, prevent = 5, trend = "up")
+safezone(x, n = 10, coef = 2, prevent = 5, trend = "up")
 }
 \arguments{
-\item{HL}{An object that is coercible to xts or matrix and contains High-Low prices.}
+\item{x}{An object that is coercible to xts or matrix and contains High-Low prices.}
 
 \item{n}{Number of lookback periods for the safezone period. Default is 10.}
 

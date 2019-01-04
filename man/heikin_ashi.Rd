@@ -4,10 +4,10 @@
 \alias{heikin_ashi}
 \title{Heikin-Ashi}
 \usage{
-heikin_ashi(data)
+heikin_ashi(x)
 }
 \arguments{
-\item{data}{an xts object that contains OHLC data}
+\item{x}{an xts object that contains OHLC data}
 }
 \value{
 The heikin_ashi function will return a OHLC dataset with the calculated 
