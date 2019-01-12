@@ -23,6 +23,13 @@
 #' addTA(stochRSI(Cl(ADM)))
 #' }
 stochRSI <- function(x, n = 14L){
+  
+  if (n < 1 || n > NROW(x)) 
+    stop(sprintf("n = %d is outside valid range: [1, %d]", 
+                 n, NROW(x)))
+  
+  x <- xts::try.xts(x, error = as.matrix)
+  
   rsi <- TTR::RSI(x, n)
   rsi_out <- (rsi - TTR::runMin(rsi, n)) / (TTR::runMax(rsi, n) - TTR::runMin(rsi, n))
   return(setNames(rsi_out, "stochRSI"))
@@ -54,7 +61,17 @@ stochRSI <- function(x, n = 14L){
 #' \url{https://www.investopedia.com/terms/e/envelope.asp}
 #' 
 envelope <- function(x, maType = "EMA", n = 22, p = 2.5, ...){
-  movavg <- do.call(maType, list(Cl(x), n = n, ...))
+  
+  if (n < 1 || n > NROW(x)) 
+    stop(sprintf("n = %d is outside valid range: [1, %d]", 
+                 n, NROW(x)))
+  
+  if (p > 100 || p < 0) 
+    stop("invalid value of p. p needs to be between 0 and 100") 
+                 
+  if(!quantmod::is.OHLC(x)) stop("x must contain OHLC columns")
+  
+  movavg <- do.call(maType, list(quantmod::Cl(x), n = n, ...))
   envelope <- cbind(movavg * (1 - p/100), movavg, movavg * (1 + p/100))
   
   return(setNames(envelope, c("lower_bound", "midpoint", "upper_bound")))
