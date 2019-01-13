@@ -1,4 +1,4 @@
-context("testing equality")
+context("Testing equality techical indicators")
 
 load(file.path("ADM.rda"))
 
@@ -15,7 +15,7 @@ test_that("Test envelope: test outcome ema vs envelope", {
 })
 
 
-context("testing incorrect parameters")
+context("Testing incorrect parameters techical indicators")
 
 test_that("Test stochRSI: periods incorrect", {
   expect_error(stochRSI(ADM$ADM.Close, n = 0))
