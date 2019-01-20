@@ -24,10 +24,11 @@ test_that("Test HA Close", {
 test_that("Test HA parameters", {
   expect_error(heikin_ashi(mtcars))
   expect_error(heikin_ashi(ADM$ADM.Close))
+  
+  # test error on NA values
   ADM$ADM.Open[1] <- NA
   expect_error(heikin_ashi(ADM))
 })
-
 
 
 
