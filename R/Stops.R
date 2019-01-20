@@ -27,8 +27,17 @@
 #' 
 #' 
 chandelier <- function(x, n = 22, coef = 3, trend = "up"){
-  HLC <- try.xts(x, error = as.matrix)
-  if(!trend %in% c("up", "down")) stop("trend should be up or down", call. = FALSE)
+  
+  # input tests
+  x <- try.xts(x, error = as.matrix)
+  
+  if(n < 1 || n > NROW(x)) 
+    stop(sprintf("n = %d is outside valid range: [1, %d]", n, NROW(x)))
+  
+  if(coef <= 0) stop("ATR coefficient should have a positive value")
+  
+  if(!trend %in% c("up", "down")) 
+    stop("trend should be up or down", call. = FALSE)
   
   if(trend == "down"){  
     chandelier <- TTR::runMin(quantmod::Lo(x), n) + coef * TTR::ATR(quantmod::HLC(x), n)[,"atr"]  
@@ -74,6 +83,14 @@ chandelier <- function(x, n = 22, coef = 3, trend = "up"){
 #' addTA(safezone(ADM), on = 1)
 #' }
 safezone <- function(x, n = 10, coef = 2, prevent = 5, trend = "up"){
+  
+  # input tests
+  if(n < 1 || n > NROW(x)) 
+    stop(sprintf("n = %d is outside valid range: [1, %d]", n, NROW(x)))
+  
+  if(coef <= 0) stop("The coefficient should have a positive value")
+  
+  if(prevent <= 0) stop("The prevent value should have a positive value")
   
   if(!trend %in% c("up", "down")) stop("trend should be up or down", call. = FALSE)
   
@@ -123,7 +140,17 @@ safezone <- function(x, n = 10, coef = 2, prevent = 5, trend = "up"){
 #' }
 ATR_stop <- function(x, n = 5, coef = 3.5){
   
+  # input tests
+  if(n < 1 || n > NROW(x)) 
+    stop(sprintf("n = %d is outside valid range: [1, %d]", n, NROW(x)))
+  
+  if(coef <= 0) stop("The ATR coefficient should have a positive value")
+  
   if(!quantmod::is.OHLC(x)) stop("x must contain OHLC columns")
+  
+  if(any(is.na(ADM))) 
+    stop("data contains NA values, either remove these records or fix them")
+  
   
   x$ATR_stop <- coef * TTR::ATR(quantmod::HLC(x), n)[, "atr"]
   x$ATR_trail_stop <- 0
