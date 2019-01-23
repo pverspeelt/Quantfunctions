@@ -32,7 +32,9 @@ stochRSI <- function(x, n = 14L){
   
   rsi <- TTR::RSI(x, n)
   rsi_out <- (rsi - TTR::runMin(rsi, n)) / (TTR::runMax(rsi, n) - TTR::runMin(rsi, n))
-  return(setNames(rsi_out, "stochRSI"))
+  names(rsi_out) <- "stochRSI"
+  
+  return(rsi_out)
 }
 
 
@@ -42,7 +44,7 @@ stochRSI <- function(x, n = 14L){
 #' This function creates a moving average envelope. 
 #'
 #' @param x an xts object that contains OHLC data
-#' @param maType moving average type. Default is "EMA". But any 
+#' @param ma Type of moving average used. Default is "EMA". Options are EMA or SMA. 
 #' @param n Number of periods. Default is 22.
 #' @param p percentage of moving the upper and lower bounderies away from the 
 #' midpoint of the moving average. Default is 2.5. Needs to be between 0 and 100.
@@ -60,21 +62,33 @@ stochRSI <- function(x, n = 14L){
 #' @references
 #' \url{https://www.investopedia.com/terms/e/envelope.asp}
 #' 
-envelope <- function(x, maType = "EMA", n = 22, p = 2.5, ...){
+envelope <- function(x, ma = "EMA", n = 22, p = 2.5, ...){
   
+  # check input parameters
   if (n < 1 || n > NROW(x)) 
     stop(sprintf("n = %d is outside valid range: [1, %d]", 
                  n, NROW(x)))
   
   if (p > 100 || p < 0) 
-    stop("invalid value of p. p needs to be between 0 and 100") 
+    stop("invalid value of p. p needs to be between 0 and 100.") 
                  
-  if(!quantmod::is.OHLC(x)) stop("x must contain OHLC columns")
+  if(!quantmod::is.OHLC(x)) 
+    stop("x must contain OHLC columns.")
   
-  movavg <- do.call(maType, list(quantmod::Cl(x), n = n, ...))
+  if (!ma %in% c("EMA", "SMA")) 
+    stop('ma should be "EMA" or "SMA".')
+  
+  # functional code
+  if (ma == "SMA") {
+    movavg <- TTR::SMA(quantmod::Cl(x), n = n)
+  } else {
+    movavg <- TTR::EMA(quantmod::Cl(x), n = n)
+  }
+
   envelope <- cbind(movavg * (1 - p/100), movavg, movavg * (1 + p/100))
+  names(envelope) <- c("lower_bound", "midpoint", "upper_bound")
   
-  return(setNames(envelope, c("lower_bound", "midpoint", "upper_bound")))
+  envelope
 }
 
 

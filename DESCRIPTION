@@ -4,14 +4,15 @@ Version: 0.0.1.0000
 Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
 Description: Contains several functions to enhance Quantmod, TTR and Quantstrat and tidyquant. 
 Depends: 
-    R (>= 3.5.0),
-    quantmod
-License: What license is it under?
+    R (>= 3.5.0)
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
 Imports: 
     TTR,
-    xts
+    xts,
+    zoo,
+    quantmod
 Suggests: 
     testthat

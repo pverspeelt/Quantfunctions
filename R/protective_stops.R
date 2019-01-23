@@ -29,7 +29,7 @@
 chandelier <- function(x, n = 22, coef = 3, trend = "up"){
   
   # input tests
-  x <- try.xts(x, error = as.matrix)
+  x <- xts::try.xts(x, error = as.matrix)
   
   if(n < 1 || n > NROW(x)) 
     stop(sprintf("n = %d is outside valid range: [1, %d]", n, NROW(x)))
@@ -44,7 +44,10 @@ chandelier <- function(x, n = 22, coef = 3, trend = "up"){
   } else {
     chandelier <- TTR::runMax(quantmod::Hi(x), n) - coef * TTR::ATR(quantmod::HLC(x), n)[,"atr"]
   }
-  return(setNames(chandelier, "chandelier_stop"))
+  
+  names(chandelier) <- "chandelier_stop"
+  
+  return(chandelier)
 }
 
 
@@ -112,7 +115,9 @@ safezone <- function(x, n = 10, coef = 2, prevent = 5, trend = "up"){
     protection <- TTR::runMax(short_stop, n = prevent)
   }
   
-  return(setNames(protection, "safezone_stop"))
+  names(protection) <- "safezone_stop"
+  
+  return(protection)
 }
 
 
@@ -148,7 +153,7 @@ ATR_stop <- function(x, n = 5, coef = 3.5){
   
   if(!quantmod::is.OHLC(x)) stop("x must contain OHLC columns")
   
-  if(any(is.na(ADM))) 
+  if(any(is.na(x))) 
     stop("data contains NA values, either remove these records or fix them")
   
   
@@ -159,15 +164,15 @@ ATR_stop <- function(x, n = 5, coef = 3.5){
   for(i in seq.int(n + 1L, nrow(x))){
     trail1 <- zoo::coredata(x$ATR_trail_stop[i-1])
     if(quantmod::Cl(x)[i] > trail1 && x$lag_cl[i] > trail1) {
-      x$ATR_trail_stop[i] <- max(trail1, zoo::coredata(Cl(x)[i] - x$ATR_stop[i]))
+      x$ATR_trail_stop[i] <- max(trail1, zoo::coredata(quantmod::Cl(x)[i] - x$ATR_stop[i]))
     } else
       if(quantmod::Cl(x)[i] < trail1 && x$lag_cl[i] < trail1) {
-        x$ATR_trail_stop[i] <- min(trail1, zoo::coredata(Cl(x)[i] + x$ATR_stop[i]))
+        x$ATR_trail_stop[i] <- min(trail1, zoo::coredata(quantmod::Cl(x)[i] + x$ATR_stop[i]))
       } else
         if(quantmod::Cl(x)[i] > trail1) {
-          x$ATR_trail_stop[i] <- zoo::coredata(Cl(x)[i] - x$ATR_stop[i])
+          x$ATR_trail_stop[i] <- zoo::coredata(quantmod::Cl(x)[i] - x$ATR_stop[i])
         } else {
-          x$ATR_trail_stop[i] <- zoo::coredata(Cl(x)[i] + x$ATR_stop[i])
+          x$ATR_trail_stop[i] <- zoo::coredata(quantmod::Cl(x)[i] + x$ATR_stop[i])
         }
   }
   

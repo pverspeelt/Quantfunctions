@@ -40,11 +40,11 @@ heikin_ashi <- function(x) {
   
   if(!quantmod::is.OHLC(x)) stop("data must contain OHLC columns")
   
-  if(any(is.na(ADM))) 
+  if(any(is.na(x))) 
     stop("data contains NA values, either remove these records or fix them")
   
-  heikin_close <- xts::xts(Matrix::rowMeans(quantmod::OHLC(x)), 
-                           order.by = index(x))
+  heikin_close <- xts::xts(rowMeans(quantmod::OHLC(x)), 
+                           order.by = zoo::index(x))
   heikin_open  <- quantmod::Op(x)
   
   # need a loop: heiki ashi open is dependent on the previous value
@@ -53,12 +53,13 @@ heikin_ashi <- function(x) {
   }
   
   heikin_high <- xts::xts(apply(cbind(quantmod::Hi(x), heikin_open, heikin_close), 1, max), 
-                          order.by = index(x))
+                          order.by = zoo::index(x))
   heikin_low <- xts::xts(apply(cbind(quantmod::Lo(x), heikin_open, heikin_close), 1, min), 
-                         order.by = index(x))
+                         order.by = zoo::index(x))
   
   out <- merge(heikin_open, heikin_high, heikin_low, heikin_close)
-  out <- setNames(out, c("Open", "High", "Low", "Close"))
+  names(out) <- c("Open", "High", "Low", "Close")
+  
   return(out)
 }
 

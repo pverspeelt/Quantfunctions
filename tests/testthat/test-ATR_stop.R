@@ -12,11 +12,6 @@ test_that("Test ATR_stop inputs", {
   expect_error(ATR_stop(ADM))
 })
 
-rm(ADM)
-
-# why is this sometimes needed and most of the times not?
-load(file.path("ADM.rda"), envir = .GlobalEnv)
-
 test_that("Test ATR_stop calculations",{
   
   # using hash as loop calculations might take time

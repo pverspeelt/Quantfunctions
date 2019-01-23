@@ -4,12 +4,12 @@
 \alias{envelope}
 \title{Moving Average Envelope}
 \usage{
-envelope(x, maType = "EMA", n = 22, p = 2.5, ...)
+envelope(x, ma = "EMA", n = 22, p = 2.5, ...)
 }
 \arguments{
 \item{x}{an xts object that contains OHLC data}
 
-\item{maType}{moving average type. Default is "EMA". But any}
+\item{ma}{Type of moving average used. Default is "EMA". Options are EMA or SMA.}
 
 \item{n}{Number of periods. Default is 22.}
 
