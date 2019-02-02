@@ -14,7 +14,8 @@
 #' @param coef ATR coefficient. Default is 3
 #' @param trend Indicates if chandelier should be calculated for the up-trend or down-trend. 
 #' Default is up. Possible values are "up" or "down".
-#'
+#' 
+#' @family protective stops
 #' @return Returns the chandelier exit points which can be used as stop loss in a trend following strategy.
 #' @export
 #'
@@ -54,7 +55,8 @@ chandelier <- function(x, n = 22, coef = 3, trend = "up"){
 
 #' Safezone Stop
 #' 
-#' The safezone stop was developed by Alexander Elder. The safezone stop is described in his book "Come Into My Trading Room". 
+#' The safezone stop was developed by Alexander Elder. The safezone stop is 
+#' described in his book "Come Into My Trading Room" pages 173-180. 
 #' 
 #' Once you have defined a trend, you need to choose the length of the lookback period for measuring noise level. 
 #' It has to be long enough to track recent behavior but short enough to be relevant for current trading. 
@@ -74,8 +76,10 @@ chandelier <- function(x, n = 22, coef = 3, trend = "up"){
 #' @param prevent Prevents the stop from lowering for x days. Default is 5.
 #' @param trend Indicates if the safezone stop should be calculated for the up-trend or down-trend. 
 #' Default is "up". Possible values are "up" or "down".
-#'
+#' 
+#' @family protective stops
 #' @return Returns the safezone exit points which can be used as stop loss in a trend following strategy.
+#' @family Alexander Elder functions
 #' @export
 #'
 #' @examples
@@ -132,7 +136,8 @@ safezone <- function(x, n = 10, coef = 2, prevent = 5, trend = "up"){
 #' @param x an xts object that contains OHLC data
 #' @param n Number of lookback periods for the ATR Stop. Default is 5
 #' @param coef ATR coefficient. Default is 3.5
-#'
+#' 
+#' @family protective stops
 #' @return Returns an average true range trailing stop which can be used as a stop loss in a trend following system.
 #' @export
 #'

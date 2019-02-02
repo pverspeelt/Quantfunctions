@@ -22,7 +22,8 @@ Default is "up". Possible values are "up" or "down".}
 Returns the safezone exit points which can be used as stop loss in a trend following strategy.
 }
 \description{
-The safezone stop was developed by Alexander Elder. The safezone stop is described in his book "Come Into My Trading Room".
+The safezone stop was developed by Alexander Elder. The safezone stop is 
+described in his book "Come Into My Trading Room" pages 173-180.
 }
 \details{
 Once you have defined a trend, you need to choose the length of the lookback period for measuring noise level. 
@@ -44,3 +45,12 @@ chartSeries(ADM)
 addTA(safezone(ADM), on = 1)
 }
 }
+\seealso{
+Other protective stops: \code{\link{ATR_stop}},
+  \code{\link{chandelier}}
+
+Other Alexander Elder functions: \code{\link{alert_marker}},
+  \code{\link{thermometer}}
+}
+\concept{Alexander Elder functions}
+\concept{protective stops}
