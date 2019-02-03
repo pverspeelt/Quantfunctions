@@ -4,7 +4,7 @@
 \alias{thermometer}
 \title{Market Thermometer}
 \usage{
-thermometer(x, n)
+thermometer(x, n = 22)
 }
 \arguments{
 \item{x}{an xts object that contains OHLC data.}

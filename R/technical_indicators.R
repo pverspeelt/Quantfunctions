@@ -30,11 +30,14 @@ stochRSI <- function(x, n = 14L){
   
   x <- xts::try.xts(x, error = as.matrix)
   
-  rsi <- TTR::RSI(x, n)
+  if(!quantmod::has.Cl(x)) 
+    stop("x must contain a close column.")
+  
+  rsi <- TTR::RSI(quantmod::Cl(x), n)
   rsi_out <- (rsi - TTR::runMin(rsi, n)) / (TTR::runMax(rsi, n) - TTR::runMin(rsi, n))
   names(rsi_out) <- "stochRSI"
   
-  return(rsi_out)
+  rsi_out
 }
 
 
@@ -76,7 +79,8 @@ envelope <- function(x, ma = "EMA", n = 22, p = 2.5, ...){
     stop("x must contain OHLC columns.")
   
   if (!ma %in% c("EMA", "SMA")) 
-    stop('ma should be "EMA" or "SMA".')
+    stop(sprintf('Type of moving average (ma) should be "EMA" or "SMA".
+    You supplied %s', ma))
   
   # functional code
   if (ma == "SMA") {

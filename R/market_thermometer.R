@@ -27,7 +27,7 @@
 #' chartSeries(ADM, TA = NULL) # without volume
 #' addTA(thermometer(ADM))
 #' }
-thermometer <- function(x, n){
+thermometer <- function(x, n = 22){
   
   # check input parameters
   if (n < 1 || n > NROW(x)) 
@@ -44,7 +44,7 @@ thermometer <- function(x, n){
                         ifelse((highs - quantmod::Lag(highs)) > (quantmod::Lag(lows) - lows),
                                highs - quantmod::Lag(highs),
                                quantmod::Lag(lows) - lows)
-  )
+                        )
   temp_ema <- TTR::EMA(temperature, n = 22)
   thermometer <- merge(temperature, temp_ema)
   names(thermometer) <- c("temperature", "temp_ema")
