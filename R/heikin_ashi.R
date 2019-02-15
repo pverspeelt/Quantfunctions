@@ -28,6 +28,7 @@
 #'
 #' @examples
 #' \dontrun{
+#' library(quantmod)
 #' ADM <- getSymbols("ADM", 
 #'                   from = "2018-01-01", 
 #'                   to = "2018-07-01", 
@@ -38,10 +39,12 @@
 #'  
 heikin_ashi <- function(x) {
   
-  if(!quantmod::is.OHLC(x)) stop("data must contain OHLC columns")
+  if(!quantmod::is.OHLC(x)) 
+    stop("x must contain OHLC columns", call. = FALSE)
   
   if(any(is.na(x))) 
-    stop("data contains NA values, either remove these records or fix them")
+    stop("x contains NA values, either remove these records or fix them",
+         call. = FALSE)
   
   heikin_close <- xts::xts(rowMeans(quantmod::OHLC(x)), 
                            order.by = zoo::index(x))

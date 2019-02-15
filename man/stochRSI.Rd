@@ -28,7 +28,11 @@ This indicator is primarily used for identifying overbought and oversold conditi
 }
 \examples{
 \dontrun{
-getSymbols("ADM", from = "2018-01-01", to = "2018-07-01")
+library(quantmod)
+ADM <- getSymbols("ADM", 
+                  from = "2018-01-01", 
+                  to = "2018-07-01",
+                  auto.assign = FALSE)
 chartSeries(ADM, TA = NULL) # without volume
 addTA(stochRSI(Cl(ADM)))
 }

@@ -26,7 +26,11 @@ on stackoverflow and \href{http://marintrading.com/106VERV.PDF}{this article} by
 \examples{
 \dontrun{
 # show ATR stop on chart
-getSymbols("ADM", from = "2018-01-01", to = "2018-07-01")
+library(quantmod)
+ADM <- getSymbols("ADM", 
+                  from = "2018-01-01", 
+                  to = "2018-07-01",
+                  auto.assign = FALSE)
 chartSeries(ADM)
 addTA(ATR_stop(ADM), on = 1)
 }

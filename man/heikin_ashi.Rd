@@ -35,6 +35,7 @@ Calculates the Heikin-Ashi values needed for plotting in a candlestick chart.
 }
 \examples{
 \dontrun{
+library(quantmod)
 ADM <- getSymbols("ADM", 
                   from = "2018-01-01", 
                   to = "2018-07-01", 

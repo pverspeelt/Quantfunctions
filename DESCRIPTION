@@ -13,6 +13,7 @@ Imports:
     TTR,
     xts,
     zoo,
-    quantmod
+    quantmod,
+    glue
 Suggests: 
     testthat

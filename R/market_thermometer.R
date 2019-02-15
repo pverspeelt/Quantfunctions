@@ -31,16 +31,18 @@ thermometer <- function(x, n = 22){
   
   # check input parameters
   if (n < 1 || n > NROW(x)) 
-    stop(sprintf("n = %d is outside valid range: [1, %d]", 
-                 n, NROW(x)))
+    stop(glue("n = {n} is outside valid range: [1, {NROW(x)}]"), 
+         call. = FALSE)
   
   if(!quantmod::is.OHLC(x)) 
-    stop("x must contain OHLC columns.")
+    stop("x must contain OHLC columns.", 
+         call. = FALSE)
   
   # function code
   lows <- quantmod::Lo(x)
   highs <- quantmod::Hi(x)
-  temperature <- ifelse(highs < quantmod::Lag(highs) & lows > quantmod::Lag(lows), 0, 
+  temperature <- ifelse(highs < quantmod::Lag(highs) & lows > quantmod::Lag(lows), 
+                        0, 
                         ifelse((highs - quantmod::Lag(highs)) > (quantmod::Lag(lows) - lows),
                                highs - quantmod::Lag(highs),
                                quantmod::Lag(lows) - lows)

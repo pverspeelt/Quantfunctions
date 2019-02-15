@@ -11,6 +11,7 @@ knitr::opts_chunk$set(
   fig.path = "tools/README-"
 )
 suppressPackageStartupMessages(library(quantmod))
+Sys.setlocale("LC_TIME", "english")
 ```
 # Quantfunctions
 
@@ -31,7 +32,7 @@ install_github("pverspeelt/Quantfunctions")
 
 The following example shows how to add a chandelier stop to an `rtsplot` from the rtsplot package.
 
-```{r, fig.height=8, fig.width=8, message=FALSE}
+```{r, fig.height=5, fig.width=6, message=FALSE}
 library(quantmod)
 library(Quantfunctions)
 library(rtsplot)
@@ -43,3 +44,6 @@ rtsplot.legend(labels = c("ADM", 'chandelier'),
                fill = c("black", "blue"), 
                list(ADM$ADM.Close, ADM_chandelier))
 ```
+
+
+This readme was created on: `r Sys.Date()`

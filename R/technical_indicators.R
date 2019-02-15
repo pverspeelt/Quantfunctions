@@ -18,20 +18,25 @@
 #'
 #' @examples
 #' \dontrun{
-#' getSymbols("ADM", from = "2018-01-01", to = "2018-07-01")
+#' library(quantmod)
+#' ADM <- getSymbols("ADM", 
+#'                   from = "2018-01-01", 
+#'                   to = "2018-07-01",
+#'                   auto.assign = FALSE)
 #' chartSeries(ADM, TA = NULL) # without volume
 #' addTA(stochRSI(Cl(ADM)))
 #' }
 stochRSI <- function(x, n = 14L){
   
   if (n < 1 || n > NROW(x)) 
-    stop(sprintf("n = %d is outside valid range: [1, %d]", 
-                 n, NROW(x)))
-  
+    stop(glue("n = {n} is outside valid range: [1, {NROW(X)}]"),
+         call. = FALSE)
+
   x <- xts::try.xts(x, error = as.matrix)
   
   if(!quantmod::has.Cl(x)) 
-    stop("x must contain a close column.")
+    stop("x must contain a close column.",
+         call. = FALSE)
   
   rsi <- TTR::RSI(quantmod::Cl(x), n)
   rsi_out <- (rsi - TTR::runMin(rsi, n)) / (TTR::runMax(rsi, n) - TTR::runMin(rsi, n))
@@ -58,7 +63,11 @@ stochRSI <- function(x, n = 14L){
 #'
 #' @examples
 #' \dontrun{
-#' getSymbols("ADM", from = "2018-01-01", to = "2018-07-01")
+#' library(quantmod)
+#' ADM <- getSymbols("ADM", 
+#'                   from = "2018-01-01",
+#'                   to = "2018-07-01",
+#'                   auto.assign = FALSE)
 #' chartSeries(ADM)
 #' addTA(envelope(ADM), on = 1)
 #' }
@@ -69,18 +78,22 @@ envelope <- function(x, ma = "EMA", n = 22, p = 2.5, ...){
   
   # check input parameters
   if (n < 1 || n > NROW(x)) 
-    stop(sprintf("n = %d is outside valid range: [1, %d]", 
-                 n, NROW(x)))
+    stop(glue("n = {n} is outside valid range: [1, {NROW(x)}]"),
+         call. = FALSE)
   
   if (p > 100 || p < 0) 
-    stop("invalid value of p. p needs to be between 0 and 100.") 
+    stop(glue("invalid value of p. p needs to be between 0 and 100.
+              You supplied: {p}"),
+         call. = FALSE)
                  
   if(!quantmod::is.OHLC(x)) 
-    stop("x must contain OHLC columns.")
+    stop("x must contain OHLC columns.",
+         call. = FALSE)
   
   if (!ma %in% c("EMA", "SMA")) 
-    stop(sprintf('Type of moving average (ma) should be "EMA" or "SMA".
-    You supplied %s', ma))
+    stop(glue('Type of moving average (ma) should be "EMA" or "SMA".
+              You supplied: {ma}.'),
+         call. = FALSE)
   
   # functional code
   if (ma == "SMA") {

@@ -32,7 +32,11 @@ Lowest Low in last 22 days + 3 * ATR for 22 days
 }
 \examples{
 \dontrun{
-getSymbols("ADM", from = "2018-01-01", to = "2018-07-01")
+libary(quantmod)
+ADM <- getSymbols("ADM", 
+                  from = "2018-01-01", 
+                  to = "2018-07-01",
+                  auto.assign = FALSE)
 chartSeries(ADM)
 addTA(chandelier(ADM), on = 1)
 }

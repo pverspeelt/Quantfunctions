@@ -21,7 +21,11 @@
 #'
 #' @examples
 #' \dontrun{
-#' getSymbols("ADM", from = "2018-01-01", to = "2018-07-01")
+#' libary(quantmod)
+#' ADM <- getSymbols("ADM", 
+#'                   from = "2018-01-01", 
+#'                   to = "2018-07-01",
+#'                   auto.assign = FALSE)
 #' chartSeries(ADM)
 #' addTA(chandelier(ADM), on = 1)
 #' }
@@ -33,12 +37,17 @@ chandelier <- function(x, n = 22, coef = 3, trend = "up"){
   x <- xts::try.xts(x, error = as.matrix)
   
   if(n < 1 || n > NROW(x)) 
-    stop(sprintf("n = %d is outside valid range: [1, %d]", n, NROW(x)))
+    stop(glue("n = {n} is outside valid range: [1, {NROW(x)}]"), 
+         call. = FALSE)
   
-  if(coef <= 0) stop("ATR coefficient should have a positive value")
+  if(coef <= 0) 
+    stop("ATR coefficient should have a positive value", 
+         call. = FALSE)
   
   if(!trend %in% c("up", "down")) 
-    stop("trend should be up or down", call. = FALSE)
+    stop(glue('Trend should be "up" or "down".
+              You supplied: {trend}.'), 
+              call. = FALSE)
   
   if(trend == "down"){  
     chandelier <- TTR::runMin(quantmod::Lo(x), n) + coef * TTR::ATR(quantmod::HLC(x), n)[,"atr"]  
@@ -85,7 +94,11 @@ chandelier <- function(x, n = 22, coef = 3, trend = "up"){
 #' @examples
 #' \dontrun{
 #' # show safezone stop on chart
-#' getSymbols("ADM", from = "2018-01-01", to = "2018-07-01")
+#' library(quantmod)
+#' ADM <- getSymbols("ADM", 
+#'                   from = "2018-01-01", 
+#'                   to = "2018-07-01",
+#'                   auto.assign = FALSE)
 #' chartSeries(ADM)
 #' addTA(safezone(ADM), on = 1)
 #' }
@@ -93,13 +106,23 @@ safezone <- function(x, n = 10, coef = 2, prevent = 5, trend = "up"){
   
   # input tests
   if(n < 1 || n > NROW(x)) 
-    stop(sprintf("n = %d is outside valid range: [1, %d]", n, NROW(x)))
+    stop(glue("n = {n} is outside valid range: [1, {NROW(x)}]"), 
+         call. = FALSE)
   
-  if(coef <= 0) stop("The coefficient should have a positive value")
+  if(coef <= 0) 
+    stop(glue("The coefficient should have a positive value.
+         You supplied: {coef}."),
+         call. = FALSE)
   
-  if(prevent <= 0) stop("The prevent value should have a positive value")
+  if(prevent <= 0) 
+    stop(glue("The prevent value should have a positive value.
+              You supplied: {prevent}."), 
+         call. = FALSE)
   
-  if(!trend %in% c("up", "down")) stop("trend should be up or down", call. = FALSE)
+  if(!trend %in% c("up", "down")) 
+    stop(glue('Trend should be "up" or "down". 
+              You supplied: {trend}.'), 
+         call. = FALSE)
   
   if(trend == "down"){
     high <- quantmod::Hi(x)
@@ -144,7 +167,11 @@ safezone <- function(x, n = 10, coef = 2, prevent = 5, trend = "up"){
 #' @examples
 #' \dontrun{
 #' # show ATR stop on chart
-#' getSymbols("ADM", from = "2018-01-01", to = "2018-07-01")
+#' library(quantmod)
+#' ADM <- getSymbols("ADM", 
+#'                   from = "2018-01-01", 
+#'                   to = "2018-07-01",
+#'                   auto.assign = FALSE)
 #' chartSeries(ADM)
 #' addTA(ATR_stop(ADM), on = 1)
 #' }
@@ -152,14 +179,21 @@ ATR_stop <- function(x, n = 5, coef = 3.5){
   
   # input tests
   if(n < 1 || n > NROW(x)) 
-    stop(sprintf("n = %d is outside valid range: [1, %d]", n, NROW(x)))
+    stop(glue("n = {n} is outside valid range: [1, {NROW(x)}]"),
+         call. = FALSE)
   
-  if(coef <= 0) stop("The ATR coefficient should have a positive value")
+  if(coef <= 0) 
+    stop(glue("The ATR coefficient should have a positive value.
+         You supplied: {coef}."),
+         call. = FALSE)
   
-  if(!quantmod::is.OHLC(x)) stop("x must contain OHLC columns")
+  if(!quantmod::is.OHLC(x)) 
+    stop("x must contain OHLC columns",
+         call. = FALSE)
   
   if(any(is.na(x))) 
-    stop("data contains NA values, either remove these records or fix them")
+    stop("x contains NA values, either remove these records or fix them",
+         call. = FALSE)
   
   
   x$ATR_stop <- coef * TTR::ATR(quantmod::HLC(x), n)[, "atr"]

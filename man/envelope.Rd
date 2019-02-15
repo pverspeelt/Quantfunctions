@@ -26,7 +26,11 @@ This function creates a moving average envelope.
 }
 \examples{
 \dontrun{
-getSymbols("ADM", from = "2018-01-01", to = "2018-07-01")
+library(quantmod)
+ADM <- getSymbols("ADM", 
+                  from = "2018-01-01",
+                  to = "2018-07-01",
+                  auto.assign = FALSE)
 chartSeries(ADM)
 addTA(envelope(ADM), on = 1)
 }
