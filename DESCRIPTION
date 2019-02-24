@@ -16,4 +16,5 @@ Imports:
     quantmod,
     glue
 Suggests: 
-    testthat
+    testthat,
+    covr
