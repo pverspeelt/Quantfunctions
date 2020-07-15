@@ -27,7 +27,7 @@ described in his book "Come Into My Trading Room" pages 173-180.
 }
 \details{
 Once you have defined a trend, you need to choose the length of the lookback period for measuring noise level. 
-It has to be long enough to track recent behavior but short enough to be relevant for current trading.
+It has to be long enough to track recent behavior but short enough to be relevant for current trading. 
 
 If the trend is up, mark all downside penetrations during the lookback period, 
 add their depths, and divide the sum by the number of penetrations. This gives you
@@ -50,11 +50,13 @@ addTA(safezone(ADM), on = 1)
 }
 }
 \seealso{
-Other protective stops: \code{\link{ATR_stop}},
-  \code{\link{chandelier}}
+Other protective stops: 
+\code{\link{ATR_stop}()},
+\code{\link{chandelier}()}
 
-Other Alexander Elder functions: \code{\link{alert_marker}},
-  \code{\link{thermometer}}
+Other Alexander Elder functions: 
+\code{\link{alert_marker}()},
+\code{\link{thermometer}()}
 }
 \concept{Alexander Elder functions}
 \concept{protective stops}

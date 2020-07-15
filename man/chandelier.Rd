@@ -44,7 +44,8 @@ addTA(chandelier(ADM), on = 1)
 
 }
 \seealso{
-Other protective stops: \code{\link{ATR_stop}},
-  \code{\link{safezone}}
+Other protective stops: 
+\code{\link{ATR_stop}()},
+\code{\link{safezone}()}
 }
 \concept{protective stops}

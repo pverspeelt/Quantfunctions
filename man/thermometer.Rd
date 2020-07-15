@@ -35,7 +35,8 @@ addTA(thermometer(ADM))
 }
 }
 \seealso{
-Other Alexander Elder functions: \code{\link{alert_marker}},
-  \code{\link{safezone}}
+Other Alexander Elder functions: 
+\code{\link{alert_marker}()},
+\code{\link{safezone}()}
 }
 \concept{Alexander Elder functions}

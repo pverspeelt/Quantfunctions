@@ -37,7 +37,8 @@ addPoints(1:nrow(markers), markers, col= cols, pch=19, cex=0.5, on = 1)
 }
 }
 \seealso{
-Other Alexander Elder functions: \code{\link{safezone}},
-  \code{\link{thermometer}}
+Other Alexander Elder functions: 
+\code{\link{safezone}()},
+\code{\link{thermometer}()}
 }
 \concept{Alexander Elder functions}
