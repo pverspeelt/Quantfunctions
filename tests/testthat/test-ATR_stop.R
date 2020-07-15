@@ -14,12 +14,15 @@ test_that("Test ATR_stop inputs", {
 
 test_that("Test ATR_stop calculations",{
   
-  # using hash as loop calculations might take time
-  expect_known_hash(ATR_stop(ADM), "536d720574")
- 
-  # on default settings the number of NA's should be 
-  expect_equal(sum(is.na(ATR_stop(ADM))), 5)  
+  out <- ATR_stop(ADM)
   
-  expect_length(ATR_stop(ADM), length(ADM$ADM.Close))
+  # check first calculated value
+  expect_equal(as.numeric(out[6]), 38.309, tolerance = .0001)
+ 
+  # on default settings the number of NA's should be 5 
+  expect_equal(sum(is.na(out)), 5)   
+  
+  # output should have the same number of rows as the input
+  expect_length(out, length(ADM$ADM.Close))
 })
 
