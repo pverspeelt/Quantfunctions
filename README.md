@@ -1,26 +1,36 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-Quantfunctions
-==============
 
-[![Travis build status](https://travis-ci.org/pverspeelt/Quantfunctions.svg?branch=master)](https://travis-ci.org/pverspeelt/Quantfunctions) [![Coverage status](https://codecov.io/gh/pverspeelt/Quantfunctions/branch/master/graph/badge.svg)](https://codecov.io/github/pverspeelt/Quantfunctions?branch=master)
+# Quantfunctions
 
-The goal of Quantfunctions is to extend quantmod or tidyquant with additional functions like protective stops and technical indicators not found in either of those packages nor in the TTR package. For example the protective stops can be used for technical trading rules or plotted on graphs like `chartSeries` from quantmod, `plot.xts` from xts, `geom_bar` from tidyquant, or `rtsplot` from rtsplot.
+<!-- badges: start -->
 
-Installation
-------------
+[![R-CMD-check](https://github.com/pverspeelt/Quantfunctions/workflows/R-CMD-check/badge.svg)](https://github.com/pverspeelt/Quantfunctions/actions)
+[![Coverage
+status](https://codecov.io/gh/pverspeelt/Quantfunctions/branch/master/graph/badge.svg)](https://codecov.io/github/pverspeelt/Quantfunctions?branch=master)
+<!-- badges: end -->
 
-You can install the development version of Quantfunctions from Github with:
+The goal of Quantfunctions is to extend quantmod or tidyquant with
+additional functions like protective stops and technical indicators not
+found in either of those packages nor in the TTR package. For example
+the protective stops can be used for technical trading rules or plotted
+on graphs like `chartSeries` from quantmod, `plot.xts` from xts,
+`geom_bar` from tidyquant, or `rtsplot` from rtsplot.
+
+## Installation
+
+You can install the development version of Quantfunctions from Github
+with:
 
 ``` r
 library(remotes)
 install_github("pverspeelt/Quantfunctions")
 ```
 
-Chandelier Example
-------------------
+## Chandelier Example
 
-The following example shows how to add a chandelier stop to an `rtsplot` from the rtsplot package.
+The following example shows how to add a chandelier stop to an `rtsplot`
+from the rtsplot package.
 
 ``` r
 library(quantmod)
@@ -35,6 +45,6 @@ rtsplot.legend(labels = c("ADM", 'chandelier'),
                list(ADM$ADM.Close, ADM_chandelier))
 ```
 
-![](tools/README-unnamed-chunk-1-1.png)
+![](tools/README-unnamed-chunk-1-1.png)<!-- -->
 
-This readme was created on: 2019-02-24
+This readme was created on: 2021-09-12
