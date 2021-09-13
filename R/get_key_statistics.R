@@ -41,9 +41,8 @@ get_statistics <- function(symbol){
                          "Management Effectiveness", "Income Statement", "Balance Sheet", 
                          "Cash Flow Statement")
     url <- paste0("https://finance.yahoo.com/quote/",symbol,"/key-statistics?p=", symbol)
-    dat <- url |>
-      rvest::read_html() |>
-      rvest::html_table(header = FALSE) 
+    dat <- rvest::read_html(url) 
+    dat <- rvest::html_table(dat, header = FALSE) 
     names(dat) <- statistic_group
     df_dat <- purrr::map_df(dat, dplyr::bind_rows, .id = "statistic_group")
     
