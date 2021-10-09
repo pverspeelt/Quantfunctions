@@ -1,6 +1,6 @@
 Package: Quantfunctions
 Title: Contains a diverse set of functions and indicators to add functionality to Quantmod, TTR and Quantstrat
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
 Description: Contains several functions to enhance Quantmod, TTR and Quantstrat and tidyquant. 
 Depends: 
