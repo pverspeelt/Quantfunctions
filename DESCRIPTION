@@ -17,7 +17,12 @@ Imports:
     glue,
     rvest,
     dplyr,
-    purrr
+    purrr,
+    magrittr,
+    ggplot2,
+    rlang,
+    lubridate,
+    tidyr
 Suggests: 
     testthat,
     covr
